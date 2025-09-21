@@ -141,7 +141,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="px-3">
+        <div className="">
         <PageLayout>
             {showAddNewProject && <AddNewProject setReferesh={setReferesh} handleShowAddNewProject={handleShowAddNewProject} />}
             {showAddNewTask && <AddNewTask setReferesh={setReferesh} handleShowAddNewTask={handleShowAddNewTask} />}

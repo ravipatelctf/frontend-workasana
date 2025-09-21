@@ -23,10 +23,6 @@ export default function Sidebar({data}) {
     return (
         <div className="container d-flex flex-column gap-4 w-100 py-3">
             <div className="d-flex flex-column gap-3">
-                <div className="fw-bold mb-1 text-danger text-decoration-none d-flex align-items-center gap-1">
-                    <CgProfile style={{color: "#8D5F8C"}} className="fs-3" />
-                    <span style={{color: "#8D5F8C"}} className="fw-bold fs-5">{data?.name}</span>
-                </div>
                 <Link to={`/${data?.email}`} className="fw-bold mb-1 text-secondary text-decoration-none d-flex align-items-center gap-1">
                     <MdOutlineDashboard className="fs-4 text-secondary" />
                     <span className="fw-bold fs-5 text-secondary">Dashboard</span>
