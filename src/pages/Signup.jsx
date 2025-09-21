@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signup } from "../api";
 import { toast } from "react-toastify";
+import Header from "../components/Header";
 
 export default function Signup() {
     const [name, setName] = useState("");
@@ -16,17 +17,24 @@ export default function Signup() {
             return;
         }
         const payload = {name, email, password};
-        const data = await signup(payload);
-        if (data) {
-            toast.success("Sign up successful.")
-            navigate(`/login`);
+        try {
+            const data = await signup(payload);
+            if (data) {
+                toast.success("Sign up successful.")
+                navigate(`/login`);
+            }    
+        } catch (error) {
+            toast.info("You already have an account. Try Logging in.");
         }
+
         setName("")
         setEmail("")
         setPassword("")
     }
 
     return (
+        <>
+        <Header />
         <div className="container py-4">
             <h2 className="text-center">Workasana Signup</h2>
             <label htmlFor="name" className="form-label">Name:</label>
@@ -67,5 +75,6 @@ export default function Signup() {
                 SignUp
             </button>
         </div>
+        </>
     );
 }

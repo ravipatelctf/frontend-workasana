@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export function useFetch(url) {
+export function useFetchPost(url) {
     const [data, setData] = useState(null);
 
-    async function fetchData() {
+    async function fetchData(JSONPayload) {
+        if (JSONPayload === null) {
+            return;
+        }
         const token = sessionStorage.getItem("token");            
         const headers = {
             "Content-Type": "application/json",
@@ -14,7 +17,9 @@ export function useFetch(url) {
         }
 
         const response = await fetch(url, {
+            method: "POST",
             headers: headers,
+            body: JSON.stringify(JSONPayload)
         });
 
         if (!response.ok) {
