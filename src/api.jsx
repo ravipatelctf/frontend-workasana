@@ -1,6 +1,7 @@
-// development url: http://localhost:3000/
-// production url: https://backend-workasana.vercel.app/
+// development url: http://localhost:3000
+// production url: https://backend-workasana.vercel.app
 
+export const baseUrl = `http://localhost:3000`;
 // -------------------------------------------------------------------------
 export async function signup(payload) {
     
@@ -46,5 +47,3 @@ export async function login(payload) {
     }
 }
 // -------------------------------------------------------------------------
-
-
