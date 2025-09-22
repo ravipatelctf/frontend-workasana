@@ -1,44 +1,41 @@
 
 import { useEffect, useState } from "react";
-import { useFetch } from "../useFetch";
 import Sidebar from "../components/Sidebar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ToggleableSidebar } from "../components/ToggleableSidebar";
-import { baseUrl } from "../api";
+import { useNavigate } from "react-router-dom";
 
 
 export default function PageLayout({children}) {
     const [toggleBtnStatus, setToggleBtnStatus] = useState(false);
 
-    const userEmail = sessionStorage.getItem("email");
-    const {data, fetchData} = useFetch(`${baseUrl}/users/${userEmail}`);
+    const navigate = useNavigate();
+    const token = sessionStorage.getItem("token");
 
-    const userDetails = JSON.parse(sessionStorage.getItem("data"));
-    
     useEffect(() => {
-        if (!userDetails) {
-            fetchData();
+        if (!token) {
+            navigate("/login");
+            return;
         }
-    }, []);
+    }, [token]);
 
-    if (data) {
-        sessionStorage.setItem("data", JSON.stringify(data));
+    if (!token) {
+        return;
     }
 
     function handleMenuClick() {
         setToggleBtnStatus(!toggleBtnStatus)
     }
-    // offset-md-2
-    //  position-fixed border top-0 start-0 bottom-0 h-100
+    
     return (
         <div className="row m-0">
             <div className="col-md-2 border">
                 <div className="">
                     <div className="d-none d-md-block">
-                        <Sidebar data={userDetails || data} />
+                        <Sidebar />
                     </div>
                     <div className="d-block d-md-none">
-                        <ToggleableSidebar data={userDetails || data} toggleBtnStatus={toggleBtnStatus} setToggleBtnStatus={setToggleBtnStatus} handleMenuClick={handleMenuClick} />
+                        <ToggleableSidebar toggleBtnStatus={toggleBtnStatus} setToggleBtnStatus={setToggleBtnStatus} handleMenuClick={handleMenuClick} />
                     </div>
                 </div>
             </div>

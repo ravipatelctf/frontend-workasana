@@ -5,15 +5,16 @@ import { FaProjectDiagram } from "react-icons/fa";
 import { AiOutlineTeam } from "react-icons/ai";
 import { TbReport } from "react-icons/tb";
 import { IoMdSettings } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
 import { FaTasks } from "react-icons/fa";
 
-export default function Sidebar({data}) {
+export default function Sidebar() {
     const navigate = useNavigate();
+
+    const email = sessionStorage.getItem("email");
 
     function handleLogout() {
         sessionStorage.removeItem("token");
-        sessionStorage.removeItem("data")
+        sessionStorage.removeItem("email")
         const token = sessionStorage.getItem("token");
         if (!token) {
             navigate("/login");
@@ -24,7 +25,7 @@ export default function Sidebar({data}) {
         <div className="container d-flex flex-column gap-4 w-100 py-3">
             <div className="d-flex flex-column gap-3">
                 <div className="fw-bold fs-2 d-none d-md-block" style={{color: "#8D5F8C"}}>Workasana</div>
-                <Link to={`/${data?.email}`} className="fw-bold mb-1 text-secondary text-decoration-none d-flex align-items-center gap-1">
+                <Link to={`/${email}`} className="fw-bold mb-1 text-secondary text-decoration-none d-flex align-items-center gap-1">
                     <MdOutlineDashboard className="fs-4 text-secondary" />
                     <span className="fw-bold fs-5 text-secondary">Dashboard</span>
                 </Link>
