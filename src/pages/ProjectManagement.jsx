@@ -40,12 +40,12 @@ export default function ProjectManagement() {
                             {
                                 filteredTasks && filteredTasks.map((task) => (
                                     
-                                    <tr key={task._id}>
-                                        <th scope="row">{task.name}</th>
-                                        <td>{task.team.name}</td>
+                                    <tr key={task?._id}>
+                                        <th scope="row">{task?.name}</th>
+                                        <td>{task?.team?.name}</td>
                                         <td><div className="rounded px-2 fw-bold my-2" style={{width: "fit-content", backgroundColor: "#FFECC0", color: "#B95E82"}}>{task.status}</div></td>
-                                        <td>{new Date(task.dueDate).toDateString()}</td>
-                                        <td><Link to={`/tasks/${task._id}`} className="text-decoration-none">➡️</Link></td>
+                                        <td>{new Date(task?.dueDate).toDateString()}</td>
+                                        <td><Link to={`/tasks/${task?._id}`} className="text-decoration-none">➡️</Link></td>
                                     </tr>
                                 ))
                             }
