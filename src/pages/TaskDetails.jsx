@@ -7,12 +7,12 @@ import PageLayout from "./PageLayout";
 
 export default function TaskDetails() {
     const {taskId} = useParams();
-
+    // console.log("taskId:", taskId)
     const {data} = useFetchGet(`${baseUrl}/tasks`);
-    console.log("tasks:", data);
+    // console.log("tasks:", data);
 
     const targetTask = data?.find((task) => task._id === taskId);
-    console.log("targetTask:", targetTask);
+    // console.log("targetTask:", targetTask);
 
     return (
         <div>
@@ -26,7 +26,7 @@ export default function TaskDetails() {
                             <p><strong>Project: </strong>{targetTask?.project.name}</p>
                             <p><strong>Status: </strong>{targetTask?.status}</p>
                             <p><strong>Due Date: </strong>{new Date(targetTask?.dueDate).toDateString()}</p>
-                            <p><strong>Team: </strong>{targetTask?.team.name}</p>
+                            <p><strong>Team: </strong>{targetTask?.team?.name}</p>
                         </li>
                     </ul>
                 </main>

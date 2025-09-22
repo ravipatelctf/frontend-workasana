@@ -16,7 +16,7 @@ export default function ProjectManagement() {
 
     const filteredTasks = tasks?.filter((task) => task.project._id === projectId);
 
-    console.log("filteredTasks:", filteredTasks);
+    // console.log("filteredTasks:", filteredTasks);
 
     return (
         <div>
@@ -25,6 +25,7 @@ export default function ProjectManagement() {
                 <main>
                     <h2 className="fw-bold">{targetProject?.name}</h2>
                     <p>{targetProject?.description}</p>
+                    { filteredTasks.length > 0 ? (
                     <div className="py-4">
                     <table className="table">
                         <thead className="">
@@ -51,7 +52,10 @@ export default function ProjectManagement() {
                             }
                         </tbody>
                     </table>
-                    </div>
+                    </div> ) : (
+                        <p className="text-center fw-bold">Currently, There are no tasks for this project.</p>
+                    )
+                    }
                 </main> 
                 ) : (
                     <div className="text-center">

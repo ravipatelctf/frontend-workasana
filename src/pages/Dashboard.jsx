@@ -190,6 +190,10 @@ function AddNewTask({ setReferesh, handleShowAddNewTask}) {
     
     function handleFormSubmit(e) {
         e.preventDefault();
+        if (tags.length === 0) {
+            toast.warn("Please select at least one tag.");
+            return;
+        }
         const payload = {
             "name": name,
             "project": project,
