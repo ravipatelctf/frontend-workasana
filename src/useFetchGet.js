@@ -2,18 +2,21 @@ import { useEffect, useState } from "react";
 
 export function useFetchGet(url) {
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    
+    async function fetchData() {
+        const token = sessionStorage.getItem("token");            
+        const headers = {
+            "Content-Type": "application/json",
+        }
 
-    useEffect(() => {
-        async function fetchData() {
-            const token = sessionStorage.getItem("token");            
-            const headers = {
-                "Content-Type": "application/json",
-            }
-
-            if (token) {
-                headers.Authorization = `Bearer ${token}`;
-            }
-            
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
+        }
+        
+        try {
+            setLoading(true);
             const response = await fetch(url, {
                 headers: headers,
             });
@@ -25,11 +28,19 @@ export function useFetchGet(url) {
             const result = await response.json();
             if (result) {
                 setData(result);
-            }
-        };
+            }                
+        } catch (err) {
+            setLoading(false);
+            setError(err.message)
+        } finally {
+            setLoading(false);
+        }
 
+    };
+
+    useEffect(() => {
         fetchData()
     }, [url]);
 
-    return { data };
+    return { data, loading, error, fetchData};
 }

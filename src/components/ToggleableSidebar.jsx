@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 import { CgProfile } from "react-icons/cg";
 
 
-export function ToggleableSidebar({data, toggleBtnStatus, handleMenuClick}) {
+export function ToggleableSidebar({toggleBtnStatus, handleMenuClick}) {
     return (
         <div className={`bg-light offcanvas offcanvas-start w-75 ${ toggleBtnStatus && "show"}`} tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div className="offcanvas-header ps-4">

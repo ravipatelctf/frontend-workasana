@@ -1,16 +1,16 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useFetch } from "../useFetch";
 import PageLayout from "./PageLayout";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useFetchPost } from "../useFetchPost";
 import { baseUrl } from "../api";
+import { useFetchGet } from "../useFetchGet";
+import { useFetchPost } from "../useFetchPost";
 
 
 function TaskCard({task}) {
     return (
-        <div className="col-lg-4 col-md-6 mb-3">
+        <div className="col-lg-4 col-md-6 mb-2">
             <div className="card px-3">
             <div className="bg-primary rounded px-2 text-light fw-bold my-2" style={{width: "fit-content"}}>{task.status}</div>
             <h4 className="fw-bold">{task.name}</h4>
@@ -23,10 +23,10 @@ function TaskCard({task}) {
 
 function TaskOverview({referesh, handleShowAddNewTask}) {
 
-    const {data: tasks, fetchData: fetchTasks} = useFetch(`${baseUrl}/tasks`);
+    const {data: tasks, fetchData} = useFetchGet(`${baseUrl}/tasks`);
     
     useEffect(() => {
-        fetchTasks();
+        fetchData();
     }, [referesh]);
     
     return (
@@ -62,7 +62,7 @@ function TaskOverview({referesh, handleShowAddNewTask}) {
 
 function ProjectCard({project}) {
     return (
-        <div className="col-lg-4 col-md-6">
+        <div className="col-lg-4 col-md-6 mb-2">
             <div className="card p-3">
             <h4 className="fw-bold">{project.name}</h4>
             <p className="text-dark">{project.description}</p>
@@ -74,10 +74,10 @@ function ProjectCard({project}) {
 
 function ProjectOverview({referesh, handleShowAddNewProject}) {
 
-    const {data: projects, fetchData: fetchProjects} = useFetch(`${baseUrl}/projects`);
+    const {data: projects, loading, error, fetchData} = useFetchGet(`${baseUrl}/projects`);
     
     useEffect(() => {
-        fetchProjects();
+        fetchData();
     }, [referesh]);
     
     return (
@@ -142,13 +142,13 @@ export default function Dashboard() {
 
     return (
         <div className="">
-        <PageLayout>
-            {showAddNewProject && <AddNewProject setReferesh={setReferesh} handleShowAddNewProject={handleShowAddNewProject} />}
-            {showAddNewTask && <AddNewTask setReferesh={setReferesh} handleShowAddNewTask={handleShowAddNewTask} />}
-            <ProjectOverview referesh={referesh} handleShowAddNewProject={handleShowAddNewProject}/>
-            <TaskOverview referesh={referesh} handleShowAddNewTask={handleShowAddNewTask}/>
-        </PageLayout>
-    </div>
+            <PageLayout>
+                {showAddNewProject && <AddNewProject setReferesh={setReferesh} handleShowAddNewProject={handleShowAddNewProject} />}
+                {showAddNewTask && <AddNewTask referesh={referesh} setReferesh={setReferesh} handleShowAddNewTask={handleShowAddNewTask} />}
+                <ProjectOverview referesh={referesh} handleShowAddNewProject={handleShowAddNewProject}/>
+                <TaskOverview referesh={referesh} handleShowAddNewTask={handleShowAddNewTask}/>
+            </PageLayout>
+        </div>
     );
 }
 
@@ -156,23 +156,23 @@ export default function Dashboard() {
 
 
 
-function AddNewTask({setReferesh, handleShowAddNewTask}) {
+function AddNewTask({ setReferesh, handleShowAddNewTask}) {
     const [name, setName] = useState("");
     const [project, setProject] = useState("");
     const [team, setTeam] = useState("");
     const [dueDate, setDueDate] = useState(null);
     const [tags, setTags] = useState([]);
 
-    const {data: projects, fetchData: fetchProjects} = useFetch(`${baseUrl}/projects`);
-    const {data: teams, fetchData: fetchTeams} = useFetch(`${baseUrl}/teams`);
-    const {data: tagsData, fetchData: fetchTags} = useFetch(`${baseUrl}/tags`);
-    const {data: response, fetchData: createTask} = useFetchPost(`${baseUrl}/tasks`);
-    
-    useEffect(() => {
-        fetchProjects();
-        fetchTeams();
-        fetchTags();
-    }, [])
+    const {data: projectsData, fetchData: fetchProjects} = useFetchGet(`${baseUrl}/projects`);
+    const {data: teamsData, fetchData: fetchTeams} = useFetchGet(`${baseUrl}/teams`);
+    const {data: tagsData, fetchData: fetchTags} = useFetchGet(`${baseUrl}/tags`);
+    const {postData} = useFetchPost(`${baseUrl}/tasks`);
+
+    // useEffect(() => {
+    //     fetchProjects();
+    //     fetchTeams();
+    //     fetchTags();
+    // }, [referesh])
 
     function handleFormCancel() {
         setName("")
@@ -193,24 +193,21 @@ function AddNewTask({setReferesh, handleShowAddNewTask}) {
             "tags": tags,
             "dueDate": dueDate
         };
-        console.log(payload);
         toast.info("Creating Task...");
 
         try {
-            createTask(payload);
-            console.log(response);
-            setReferesh((preValue) => preValue + 1);
+            postData(payload);
         } catch (error) {
             console.error(error);
+        } finally {
+            setReferesh((preValue) => preValue + 1);
+            setName("");
+            setProject("");
+            setTeam("");
+            setTags([]);
+            setDueDate(null);
+            handleShowAddNewTask(false);        
         }
-
-
-        setName("")
-        setProject("")
-        setTeam("")
-        setTags([])
-        setDueDate(null)
-        handleShowAddNewTask(false)
     }
 
     return (
@@ -248,7 +245,7 @@ function AddNewTask({setReferesh, handleShowAddNewTask}) {
                         >
                             <option value="" disabled>Select Project</option>
                             {
-                                projects?.map((project) => (
+                                projectsData?.map((project) => (
                                     <option key={project._id} value={project._id}>{project.name}</option>
                                 ))
                             }
@@ -265,7 +262,7 @@ function AddNewTask({setReferesh, handleShowAddNewTask}) {
                         >
                             <option value="" disabled>Select Team</option>
                             {
-                                teams?.map((team) => (
+                                teamsData?.map((team) => (
                                     <option key={team._id} value={team._id}>{team.name}</option>
                                 ))
                             }
@@ -324,15 +321,7 @@ function AddNewProject({setReferesh, handleShowAddNewProject}) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
-    // call api -- POST /projects
-    const {data, fetchData: createPost} = useFetchPost(`https://backend-workasana.vercel.app/projects`)
-
-    useEffect(() => {
-        if (data) {
-            setReferesh(preValue => preValue + 1);
-            handleShowAddNewProject(false) 
-        }
-    }, [data]);
+    const {postData} = useFetchPost(`${baseUrl}/projects`);
 
     function handleFormCancel() {
         setName("");
@@ -346,7 +335,17 @@ function AddNewProject({setReferesh, handleShowAddNewProject}) {
             return;
         }
         toast.info("Creating Project...");
-        createPost({"name": name, "description": description})
+        const payload = {"name": name, "description": description};
+        try {
+            postData(payload)
+        } catch (err) {
+            console.error(error);
+        } finally {
+            setReferesh((pv) => pv + 1);
+            setName("");
+            setDescription("");
+            handleShowAddNewProject(false)
+        }
     }
 
     return (

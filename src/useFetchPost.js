@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useFetchPost(url) {
     const [data, setData] = useState(null);
-
-    async function fetchData(JSONPayload) {
-        if (JSONPayload === null) {
-            return;
-        }
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    
+    async function postData(JSONData) {
         const token = sessionStorage.getItem("token");            
         const headers = {
             "Content-Type": "application/json",
@@ -15,22 +14,31 @@ export function useFetchPost(url) {
         if (token) {
             headers.Authorization = `Bearer ${token}`;
         }
+        
+        try {
+            setLoading(true);
+            const response = await fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(JSONData),
+            });
 
-        const response = await fetch(url, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(JSONPayload)
-        });
+            if (!response.ok) {
+                throw new Error("Failed to fetch data.");
+            }
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch data.");
+            const result = await response.json();
+            if (result) {
+                setData(result);
+            }                
+        } catch (err) {
+            setLoading(false);
+            setError(err.message)
+        } finally {
+            setLoading(false);
         }
 
-        const result = await response.json();
-        if (result) {
-            setData(result);
-        }
     };
 
-    return { data, fetchData };
+    return { data, loading, error, postData};
 }

@@ -6,7 +6,7 @@ export const baseUrl = `https://backend-workasana.vercel.app`;
 export async function signup(payload) {
     
     try {
-        const response = await fetch(`https://backend-workasana.vercel.app/auth/signup`, {
+        const response = await fetch(`https://${baseUrl}/auth/signup`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -31,7 +31,7 @@ export async function signup(payload) {
 // -------------------------------------------------------------------------
 export async function login(payload) {
     try {
-        const response = await fetch(`https://backend-workasana.vercel.app/auth/login`, {
+        const response = await fetch(`${baseUrl}/auth/login`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
