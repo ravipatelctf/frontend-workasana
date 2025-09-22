@@ -8,7 +8,6 @@ import Reports from "./pages/Reports";
 import TeamManagement from "./pages/TeamManagement";
 import ProjectManagement from "./pages/ProjectManagement";
 import TaskDetails from "./pages/TaskDetails";
-import ProjectDetails from "./pages/ProjectDetails";
 import TaskManagement from "./pages/TaskManagement";
 import Settings from "./pages/Settings";
 
@@ -22,9 +21,7 @@ export default function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/teams" element={<TeamManagement />} />
-                    <Route path="/projects" element={<ProjectManagement />} />
-                    <Route path="/projects/:projectId" element={<ProjectDetails />} />
-                    <Route path="/tasks" element={<TaskManagement />} />
+                    <Route path="/projects/:projectId" element={<ProjectManagement />} />
                     <Route path="/tasks/:taskId" element={<TaskDetails />} />
                     <Route path="/reports" element={<Reports />} />
                     <Route path="/settings" element={<Settings />} />

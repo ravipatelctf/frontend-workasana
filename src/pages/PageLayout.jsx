@@ -29,8 +29,8 @@ export default function PageLayout({children}) {
     
     return (
         <div className="row m-0">
-            <div className="col-md-2 border">
-                <div className="">
+            <div className="col-md-3 border border-bottom-0">
+                <div>
                     <div className="d-none d-md-block">
                         <Sidebar />
                     </div>
@@ -39,7 +39,7 @@ export default function PageLayout({children}) {
                     </div>
                 </div>
             </div>
-            <div className="col-md-10  py-1">
+            <div className="col-md-9 py-1">
                 <div className="row gap-3 align-items-center">
                     <div className="col-3">
                         <button className="btn d-block d-md-none" type="button">

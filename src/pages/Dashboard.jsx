@@ -6,16 +6,18 @@ import { toast } from "react-toastify";
 import { baseUrl } from "../api";
 import { useFetchGet } from "../useFetchGet";
 import { useFetchPost } from "../useFetchPost";
-
+import { Link } from "react-router-dom";
 
 function TaskCard({task}) {
     return (
         <div className="col-lg-4 col-md-6 mb-2">
-            <div className="card px-3">
-            <div className="bg-primary rounded px-2 text-light fw-bold my-2" style={{width: "fit-content"}}>{task.status}</div>
-            <h4 className="fw-bold">{task.name}</h4>
-            <p>Due Date: {new Date(task.dueDate).toDateString()}</p>
-            </div>
+            <Link to={`/tasks/${task._id}`} className="text-decoration-none">
+                <div className="card px-3">
+                    <div className="bg-primary rounded px-2 text-light fw-bold my-2" style={{width: "fit-content"}}>{task.status}</div>
+                    <h4 className="fw-bold">{task.name}</h4>
+                    <p>Due Date: {new Date(task.dueDate).toDateString()}</p>
+                </div>
+            </Link>
         </div>
     );
 }
@@ -63,10 +65,12 @@ function TaskOverview({referesh, handleShowAddNewTask}) {
 function ProjectCard({project}) {
     return (
         <div className="col-lg-4 col-md-6 mb-2">
-            <div className="card p-3">
-            <h4 className="fw-bold">{project.name}</h4>
-            <p className="text-dark">{project.description}</p>
-            </div>
+            <Link to={`/projects/${project._id}`} className="text-decoration-none">
+                <div className="card p-3">
+                <h4 className="fw-bold">{project.name}</h4>
+                <p className="text-dark">{project.description}</p>
+                </div>
+            </Link>
         </div>
     );
 }
@@ -141,7 +145,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="">
+        <div>
             <PageLayout>
                 {showAddNewProject && <AddNewProject setReferesh={setReferesh} handleShowAddNewProject={handleShowAddNewProject} />}
                 {showAddNewTask && <AddNewTask referesh={referesh} setReferesh={setReferesh} handleShowAddNewTask={handleShowAddNewTask} />}
