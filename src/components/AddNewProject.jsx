@@ -26,14 +26,13 @@ export function AddNewProject({setReferesh, handleShowAddNewProject}) {
         const payload = {"name": name, "description": description};
 
         try {
-            postData(payload)
-        } catch (err) {
-            console.error(error);
-        } finally {
+            postData(payload);
             setReferesh((pv) => pv + 1);
             setName("");
             setDescription("");
-            handleShowAddNewProject(false)
+            handleShowAddNewProject(false);
+        } catch (err) {
+            console.error(error);
         }
     }
 

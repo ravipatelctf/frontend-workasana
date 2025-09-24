@@ -53,9 +53,6 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
 
         try {
             postData(payload);
-        } catch (err) {
-            console.error(error);
-        } finally {
             setReferesh((preValue) => preValue + 1);
             setName("");
             setProject("");
@@ -63,7 +60,9 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
             setTags([]);
             setStatus("To Do");
             setDueDate(null);
-            handleShowAddNewTask(false);        
+            handleShowAddNewTask(false);   
+        } catch (err) {
+            console.error(error);     
         }
     }
 
