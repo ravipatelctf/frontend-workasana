@@ -8,7 +8,7 @@ export function AddNewProject({setReferesh, handleShowAddNewProject}) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
-    const {postData} = useFetchPost(`${baseUrl}/projects`);
+    const {postData, error} = useFetchPost(`${baseUrl}/projects`);
 
     function handleFormCancel() {
         setName("");
@@ -21,8 +21,10 @@ export function AddNewProject({setReferesh, handleShowAddNewProject}) {
         if (!name || !description) {
             return;
         }
+
         toast.info("Creating Project...");
         const payload = {"name": name, "description": description};
+
         try {
             postData(payload)
         } catch (err) {

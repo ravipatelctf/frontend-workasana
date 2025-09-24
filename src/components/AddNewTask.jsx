@@ -17,7 +17,7 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
     const {data: projectsData, fetchData: fetchProjects} = useFetchGet(`${baseUrl}/projects`);
     const {data: teamsData, fetchData: fetchTeams} = useFetchGet(`${baseUrl}/teams`);
     const {data: tagsData, fetchData: fetchTags} = useFetchGet(`${baseUrl}/tags`);
-    const {postData} = useFetchPost(`${baseUrl}/tasks`);
+    const {postData, error} = useFetchPost(`${baseUrl}/tasks`);
 
     function handleFormCancel() {
         setName("")
@@ -36,6 +36,12 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
             toast.warn("Please select at least one tag.");
             return;
         }
+
+        if (!name || !project || !team || !tags || !status || !dueDate) {
+            return;
+        }
+
+        toast.info("Creating Task...");
         const payload = {
             "name": name,
             "project": project,
@@ -44,11 +50,10 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
             "status": status,
             "dueDate": dueDate
         };
-        toast.info("Creating Task...");
 
         try {
             postData(payload);
-        } catch (error) {
+        } catch (err) {
             console.error(error);
         } finally {
             setReferesh((preValue) => preValue + 1);
