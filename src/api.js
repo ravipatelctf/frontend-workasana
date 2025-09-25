@@ -7,7 +7,7 @@ export const baseUrl = `https://backend-workasana.vercel.app`;
 export async function signup(payload) {
     
     try {
-        const response = await fetch(`https://${baseUrl}/auth/signup`, {
+        const response = await fetch(`${baseUrl}/auth/signup`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -18,10 +18,7 @@ export async function signup(payload) {
         }
 
         const data = await response.json();
-        if (data) {
-            return data;
-        }
-
+        return data;
     } catch (error) {
         throw error;
     }

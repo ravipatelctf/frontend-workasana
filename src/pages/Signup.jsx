@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signup } from "../api";
+import { signup } from "../api.js"
 import { toast } from "react-toastify";
 import Header from "../components/Header";
 
@@ -16,16 +16,26 @@ export default function Signup() {
         if (!name || !email || !password) {
             return;
         }
-        const payload = {name, email, password};
+        const payload = {
+            "name": name,
+            "email": email,
+            "password": password
+        };
+        console.log("payload:", payload);
         try {
             const data = await signup(payload);
-            if (data) {
-                toast.success("Sign up successful.")
-                navigate(`/login`);
-            }    
+            console.log("data:", data)
+            toast.success("Sign up successful.")
+            navigate(`/login`); 
         } catch (error) {
-            toast.info("You already have an account. Try Logging in.");
+            console.error(error);
+            if (error.response?.status === 409) {
+                toast.info("You already have an account. Try Logging in.");
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
         }
+
 
         setName("")
         setEmail("")
