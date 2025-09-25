@@ -79,17 +79,23 @@ export function TaskOverview({referesh, handleShowAddNewTask}) {
     
     return (
         <section className="mb-5">
-            <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center justify-content-start gap-1 mb-2">
-                    <h3 className="m-0 fs-2 fw-bold">Tasks</h3>
-                    {tasks && <FilterTasksByStatus tasks={tasks} setFilteredTasks={setFilteredTasks} filterByStatus={filterByStatus} setFilterByStatus={setFilterByStatus} />}
-                    <button className="btn btn-outline-dark btn-sm fw-bold" onClick={handleClearFilter}>Clear</button>
+            <div className="row align-items-center justify-content-between">
+                <div className="col-md-9">
+                    <div className="d-flex align-items-center justify-content-start gap-1 mb-2">
+                        <h3 className="m-0 fs-2 fw-bold">Tasks</h3>
+                        {tasks && <FilterTasksByStatus tasks={tasks} setFilteredTasks={setFilteredTasks} filterByStatus={filterByStatus} setFilterByStatus={setFilterByStatus} />}
+                        <div>
+                            <button className="btn btn-outline-dark fw-bold btn-sm" onClick={handleClearFilter}>Clear</button>
+                        </div>
+                    </div>
                 </div>
-                <button 
-                    onClick={() => handleShowAddNewTask(true)} 
-                    className="btn btn-primary fw-bold btn-sm">
-                    + New Task
-                </button>
+                <div className="col-md-3 text-center mb-2">
+                    <button 
+                        onClick={() => handleShowAddNewTask(true)} 
+                        className="btn btn-primary fw-bold btn-sm">
+                        + New Task
+                    </button>
+                </div>
             </div>
             <div className="row mt-3">
                 {
