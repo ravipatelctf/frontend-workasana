@@ -16,7 +16,7 @@ export function AddNewProject({setReferesh, handleShowAddNewProject}) {
         handleShowAddNewProject(false)
     }
 
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
         if (!name || !description) {
             return;
@@ -26,13 +26,13 @@ export function AddNewProject({setReferesh, handleShowAddNewProject}) {
         const payload = {"name": name, "description": description};
 
         try {
-            postData(payload);
+            await postData(payload);
             setReferesh((pv) => pv + 1);
             setName("");
             setDescription("");
-            handleShowAddNewProject(false);
-        } catch (err) {
-            console.error(error);
+            handleShowAddNewProject(false);   
+        } catch (error) {
+            console.error("Failed to create project.")
         }
     }
 

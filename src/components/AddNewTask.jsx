@@ -29,8 +29,17 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
         handleShowAddNewTask(false)
     }
 
+    function handleTagSelect(e) {
+        const {checked, value} = e.target;
+        if (checked) {
+            setTags((pv) => [...pv, value])
+        } else {
+            setTags((pv) => pv.filter((item => item !== value)));
+        }
+    }
+
     
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
         if (tags.length === 0) {
             toast.warn("Please select at least one tag.");
@@ -52,7 +61,7 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
         };
 
         try {
-            postData(payload);
+            await postData(payload);
             setReferesh((preValue) => preValue + 1);
             setName("");
             setProject("");
@@ -62,8 +71,11 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
             setDueDate(null);
             handleShowAddNewTask(false);   
         } catch (err) {
-            console.error(error);     
+            toast.error("Failed to create task.");
+            console.error(err)
         }
+
+
     }
 
     return (
@@ -156,7 +168,7 @@ export function AddNewTask({ setReferesh, handleShowAddNewTask}) {
                                 {
                                     tagsData?.map((tag) => (
                                         <li key={tag._id} className="dropdown-item">
-                                            <input type="checkbox" className="me-2" value={tag._id} onChange={(e) => setTags((pv) => [...pv, e.target.value])} />
+                                            <input type="checkbox" className="me-2" value={tag._id} onChange={(e) => handleTagSelect(e)} />
                                             {tag.name}
                                         </li>
                                     ))
